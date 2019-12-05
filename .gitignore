@@ -1,0 +1,7 @@
+.idea
+core/.env
+core/vendor
+frontend/node_modules
+frontend/.nuxt
+frontend/dist
+frontend/package-lock.json

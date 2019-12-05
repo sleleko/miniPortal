@@ -1,0 +1,22 @@
+@import 'variables';
+@import "~bootstrap/scss/bootstrap";
+@import '~bootstrap-vue/src/index';
+
+// For dev-server
+.nuxt__build_indicator {
+  position: fixed !important;
+  bottom: auto !important;
+  top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#__layout, #__nuxt, #app, body, html {
+  height: 100%;
+}
