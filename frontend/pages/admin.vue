@@ -23,13 +23,13 @@
   export default {
     auth: false,
     validate(app) {
-      return !app.$auth.loggedIn || app.$auth.user.role_id === 1
+      return !app.$auth.loggedIn || app.$auth.hasScope('users') || app.$auth.hasScope('users/get')
     },
     components: {FormAuth},
     data() {
       let items = [];
 
-      if (this.$auth.hasScope('users')) {
+      if (this.$auth.hasScope('users') || this.$auth.hasScope('users/get')) {
         items.push({to: 'admin-users', title: 'Users'});
         items.push({to: 'admin-user-roles', title: 'User Roles'});
       }

@@ -39,6 +39,7 @@
     },
     methods: {
       async Login() {
+        this.loading = true;
         try {
           await this.$auth.loginWith('local', {data: this.form});
           this.loading = false;

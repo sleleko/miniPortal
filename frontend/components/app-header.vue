@@ -27,7 +27,7 @@
 
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
-            <b-nav-item :to="{name: 'admin'}" v-if="$auth.hasScope('users') == 1">Admin area</b-nav-item>
+            <b-nav-item :to="{name: 'admin'}" v-if="$auth.hasScope('users') || $auth.hasScope('users/get')">Admin area</b-nav-item>
           </b-navbar-nav>
         </b-collapse>
 

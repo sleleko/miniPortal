@@ -32,7 +32,7 @@
 
   export default {
     validate({app}) {
-      return !app.$auth.loggedIn || app.$auth.hasScope('users')
+      return !app.$auth.loggedIn || app.$auth.hasScope('users') || app.$auth.hasScope('users/get')
     },
     data() {
       return {
