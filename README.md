@@ -1,12 +1,5 @@
-### This is **VESP** demo
+### This is simple phonebook service based on **VESP**
 
-VESP means:
+Phonebook working on:
 * Vue.js frontend (+ Nuxt.js)
-* Eloquent ORM
-* Slim3 micro-framework
-* Phinx migrations
-
-
-PHP core was inspired by MODX Revolution, so it may not follow modern best practices, but could be interest for MODX developers.
-
-Feel free to use it as a starter template for your services with Vue.js frontend and REST API backend.
+* PHP backend (With support REST API in future)
