@@ -11,15 +11,15 @@ class Records extends Migration
         $this->schema->create('records', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('division_id')->unsigned(); // id of structural division
-            $table->string('fullname')->unique(); // fullname of user
+            $table->string('fullname', '170')->unique(); // fullname of user
             $table->integer('position_id')->unsigned(); // id of user position
             $table->integer('phone_id')->unsigned(); // id of user phone
-            $table->string('email')->unique(); // email of user
+            $table->string('email', '100')->unique(); // email of user
             $table->string('place_division')->unique(); // place of division
             $table->timestamps();
 
             $table->foreign('division_id')
-                ->references('id')->on('divisions')
+                ->references('id')->on('structural_divisions')
                 ->onUpdate('restrict')
                 ->onDelete('restrict');
 

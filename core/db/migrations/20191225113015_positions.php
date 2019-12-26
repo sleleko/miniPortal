@@ -10,7 +10,7 @@ class Positions extends Migration
     {
         $this->schema->create('positions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title')->unique();
+            $table->string('title','150')->unique();
             $table->timestamps();
         });
     }

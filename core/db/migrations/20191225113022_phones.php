@@ -10,7 +10,7 @@ class Phones extends Migration
     {
         $this->schema->create('phones', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('type')->unique(); // type of phone : internal or external phone type
+            $table->string('type', '50')->unique(); // type of phone : internal or external phone type
             $table->integer('value')->unique(); // numeric for int XXX, ext XXXXXX or mobile XXXXXXXXXXX
             $table->timestamps();
         });
