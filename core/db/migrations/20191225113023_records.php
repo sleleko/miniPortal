@@ -19,7 +19,7 @@ class Records extends Migration
             $table->timestamps();
 
             $table->foreign('division_id')
-                ->references('id')->on('structural_divisions')
+                ->references('id')->on('divisions')
                 ->onUpdate('restrict')
                 ->onDelete('restrict');
 
