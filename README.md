@@ -1,5 +1,5 @@
-### This is simple phonebook service based on **VESP**
+### This is miniPortal based on **VESP**
 
-Phonebook working on:
-* Vue.js frontend (+ Nuxt.js)
-* PHP backend (With support REST API in future)
+This site working on:
+* Frontend Nuxt.js)
+* Backend PHP (With support REST API in future)
