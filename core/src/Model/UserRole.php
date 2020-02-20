@@ -14,18 +14,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class UserRole extends Model
 {
-  public $timestamps = true;
-  protected $fillable = ['title', 'scope'];
-  protected $casts = [
-    'scope' => 'array',
-  ];
+    public $timestamps = true;
+    protected $fillable = ['title', 'scope'];
+    protected $casts = [
+        'scope' => 'array',
+    ];
 
 
-  /**
-   * @return HasMany
-   */
-  public function users()
-  {
-    return $this->hasMany('App\Model\User', 'role_id');
-  }
+    /**
+     * @return HasMany
+     */
+    public function users()
+    {
+        return $this->hasMany('App\Model\User', 'role_id');
+    }
 }

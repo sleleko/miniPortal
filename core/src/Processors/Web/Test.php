@@ -7,7 +7,8 @@ use App\Processors\GetProcessor;
 class Test extends GetProcessor
 {
 
-    public function get() {
+    public function get()
+    {
         return $this->success('Hello World!');
     }
 
