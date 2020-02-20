@@ -178,16 +178,18 @@ abstract class Processor
      */
     public function success($data = [], $code = 200)
     {
-        if (getenv('PROCESSORS_DEBUG') && $this->container->user && $this->container->user->hasScope('debug')) {
-            $data['debug'] = $this->debug;
-        }
-        if (getenv('PROCESSORS_STAT')) {
-            $data['stat'] = [
-                'memory' => memory_get_peak_usage(true),
-                'queries' => $this->queries,
-                'query_time' => round(($this->query_time / 1000), 7),
-                'total_time' => round((microtime(true) - $this->total_time), 7),
-            ];
+        if (is_array($data)) {
+            if (getenv('PROCESSORS_DEBUG') && $this->container->user && $this->container->user->hasScope('debug')) {
+                $data['debug'] = $this->debug;
+            }
+            if (getenv('PROCESSORS_STAT')) {
+                $data['stat'] = [
+                    'memory' => memory_get_peak_usage(true),
+                    'queries' => $this->queries,
+                    'query_time' => round(($this->query_time / 1000), 7),
+                    'total_time' => round((microtime(true) - $this->total_time), 7),
+                ];
+            }
         }
 
         $response = $this->container->response
