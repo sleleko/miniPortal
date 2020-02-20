@@ -25,54 +25,74 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  */
 class User extends Model
 {
-  public $timestamps = true;
-  protected $fillable = ['username', 'password', 'fullname', 'email', 'phone', 'active', 'role_id'];
-  protected $casts = [
-    'active' => 'boolean',
-  ];
-  protected $hidden = ['password'];
+    public $timestamps = true;
+    protected $fillable = ['username', 'password', 'fullname', 'email', 'phone', 'active', 'role_id'];
+    protected $casts = [
+        'active' => 'boolean',
+    ];
+    protected $hidden = ['password'];
 
 
-  /**
-   * @param string $key
-   * @param mixed $value
-   *
-   * @return mixed|void
-   */
-  public function setAttribute($key, $value)
-  {
-    if (in_array($key, ['password', 'tmp_password'])) {
-      $value = password_hash($value, PASSWORD_DEFAULT);
+    /**
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return mixed|void
+     */
+    public function setAttribute($key, $value)
+    {
+        if (in_array($key, ['password', 'tmp_password'])) {
+            $value = password_hash($value, PASSWORD_DEFAULT);
+        }
+        parent::setAttribute($key, $value);
     }
-    parent::setAttribute($key, $value);
-  }
 
 
-  /**
-   * @param $password
-   *
-   * @return bool
-   */
-  public function verifyPassword($password)
-  {
-    return password_verify($password, $this->getAttribute('password'));
-  }
+    /**
+     * @param $password
+     *
+     * @return bool
+     */
+    public function verifyPassword($password)
+    {
+        return password_verify($password, $this->getAttribute('password'));
+    }
+
+    /**
+     * @param array|string $scope
+     *
+     * @return bool
+     */
+    public function hasScope($scope)
+    {
+        if (!is_array($scope)) {
+            $scope = [$scope];
+        }
+        $user_scope = $this->role->scope;
+
+        foreach ($scope as $v) {
+            if (!in_array($v, $user_scope)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function role()
+    {
+        return $this->belongsTo('App\Model\UserRole');
+    }
 
 
-  /**
-   * @return BelongsTo
-   */
-  public function role()
-  {
-    return $this->belongsTo('App\Model\UserRole');
-  }
-
-
-  /**
-   * @return HasMany
-   */
-  public function tokens()
-  {
-    return $this->hasMany('App\Model\UserToken');
-  }
+    /**
+     * @return HasMany
+     */
+    public function tokens()
+    {
+        return $this->hasMany('App\Model\UserToken');
+    }
 }

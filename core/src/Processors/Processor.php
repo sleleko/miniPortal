@@ -5,6 +5,7 @@ namespace App\Processors;
 use App\Container;
 use Error;
 use Exception;
+use Illuminate\Database\Events\QueryExecuted;
 use Slim\Http\Response;
 
 abstract class Processor
@@ -13,6 +14,10 @@ abstract class Processor
     protected $container;
     protected $properties = [];
     protected $scope = '';
+    protected $total_time = 0;
+    protected $query_time = 0;
+    protected $queries = 0;
+    protected $debug = [];
 
 
     /**
@@ -23,6 +28,23 @@ abstract class Processor
     public function __construct(Container $container)
     {
         $this->container = $container;
+        $this->total_time = microtime(true);
+
+        if (getenv('PROCESSORS_STAT') || getenv('PROCESSORS_DEBUG')) {
+            $container->db->listen(function ($query) use (&$count) {
+                /** @var QueryExecuted $query */
+                if (getenv('PROCESSORS_STAT')) {
+                    $this->query_time += $query->time;
+                    $this->queries++;
+                }
+                if (getenv('PROCESSORS_DEBUG')) {
+                    foreach ($query->bindings as $v) {
+                        $query->sql = preg_replace('#\?#', is_numeric($v) ? $v : "'{$v}'", $query->sql, 1);
+                    }
+                    $this->debug[] = $query->sql;
+                }
+            });
+        }
     }
 
 
@@ -156,6 +178,18 @@ abstract class Processor
      */
     public function success($data = [], $code = 200)
     {
+        if (getenv('PROCESSORS_DEBUG') && $this->container->user && $this->container->user->hasScope('debug')) {
+            $data['debug'] = $this->debug;
+        }
+        if (getenv('PROCESSORS_STAT')) {
+            $data['stat'] = [
+                'memory' => memory_get_peak_usage(true),
+                'queries' => $this->queries,
+                'query_time' => round(($this->query_time / 1000), 7),
+                'total_time' => round((microtime(true) - $this->total_time), 7),
+            ];
+        }
+
         $response = $this->container->response
             ->withJson($data, $code, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
             ->withHeader('Content-Type', 'application/json; charset=utf-8');
