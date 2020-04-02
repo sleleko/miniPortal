@@ -9,16 +9,16 @@ use Phinx\Migration\AbstractMigration;
 
 class Migration extends AbstractMigration
 {
-  /** @var Manager $capsule */
-  public $capsule;
-  /** @var Builder $capsule */
-  public $schema;
+    /** @var Manager $capsule */
+    public $capsule;
+    /** @var Builder $capsule */
+    public $schema;
 
 
-  public function init()
-  {
-    $container = new Container();
-    $this->capsule = $container->capsule;
-    $this->schema = $container->capsule->schema();
-  }
+    public function init()
+    {
+        $container = new Container();
+        $this->capsule = $container->capsule;
+        $this->schema = $container->capsule->schema();
+    }
 }

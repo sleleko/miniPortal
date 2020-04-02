@@ -7,11 +7,11 @@ use Slim\Http\Response;
 
 class NotFound extends Processor
 {
-  /**
-   * @return Response
-   */
-  public function process()
-  {
-    return $this->failure('Unknown method requested', 404);
-  }
+    /**
+     * @return Response
+     */
+    public function process()
+    {
+        return $this->failure('Unknown method requested', 404);
+    }
 }
