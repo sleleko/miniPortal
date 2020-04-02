@@ -43,10 +43,10 @@ abstract class ObjectProcessor extends Processor
     public function patch()
     {
         if (!$id = $this->getProperty($this->primaryKey)) {
-            return $this->failure('You should provide an ID of record');
+            return $this->failure('Вы должны передать ID записи');
         }
         if (!$record = $this->class::query()->find($id)) {
-            return $this->failure('Could not find the record');
+            return $this->failure('Запись не найдена');
         }
         try {
             $record->fill($this->getProperties());
@@ -73,7 +73,7 @@ abstract class ObjectProcessor extends Processor
     {
         return ($record instanceof Model)
             ? true
-            : 'Could not save the object';
+            : 'Невозможно сохранить запись';
     }
 
 
@@ -105,7 +105,7 @@ abstract class ObjectProcessor extends Processor
                 return $this->success($data);
             }
 
-            return $this->failure('Could not find the record with id ' . $id);
+            return $this->failure('Не удается найти запись с таким ID ' . $id);
         }
         $c = $this->beforeCount($c);
         if ($limit = $this->getProperty('limit', 20)) {
@@ -121,6 +121,7 @@ abstract class ObjectProcessor extends Processor
         $query = $c->getQuery();
         if (empty($query->{$query->unions ? 'unionOrders' : 'orders'}) && $sort = $this->getProperty('sort', '')) {
             $c->orderBy($class->getTable() . '.' . $sort, $this->getProperty('dir') == 'desc' ? 'desc' : 'asc');
+            $c->offset($this->getProperty('offset','0'));
         }
         $rows = [];
         foreach ($c->get() as $object) {
@@ -134,7 +135,6 @@ abstract class ObjectProcessor extends Processor
             'rows' => $rows,
         ]);
     }
-
 
     /**
      * Add conditions before get an object by id
@@ -195,7 +195,7 @@ abstract class ObjectProcessor extends Processor
     {
         return ($record instanceof Model)
             ? true
-            : 'Could not delete the object';
+            : 'Не удалось удалить объект';
     }
 
 
@@ -205,11 +205,11 @@ abstract class ObjectProcessor extends Processor
     public function delete()
     {
         if (!$id = $this->getProperty($this->primaryKey)) {
-            return $this->failure('You should specify an id of item');
+            return $this->failure('Вы должны указать ID удаляемой записи');
         }
         /** @var Model $record */
         if (!$record = $this->class::query()->find($id)) {
-            return $this->failure('Could not fond the item');
+            return $this->failure('Запись не найдена');
         }
         $check = $this->beforeDelete($record);
         if ($check !== true) {
